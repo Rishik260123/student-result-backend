@@ -32,3 +32,4 @@ Identified Entities:
 ​ - Result: (ResultID, StudentID, SubjectCode, MarksObtained, Grade)
 ​ - Notification: (AlertID, StudentID, Timestamp, Status [Sent/Pending], Channel)
 ​ - Subject: (SubjectCode, SubjectName, FacultyID)
+ - Admin: (AdminID, AdminName, AdminEmail)
