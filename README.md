@@ -24,7 +24,7 @@ Semester 6 DBMS Lab Project: Student Result Alert System.
 ## Result
 ![Result](ss/Result.png)
 
-## Fail
+## Failing Students
 ![Fail](ss/Fail.png)
 
 ## Notifications
