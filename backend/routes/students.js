@@ -30,13 +30,37 @@ router.get('/:id/report', async (req, res) => {
 })
 
 router.delete('/:id', async (req, res) => {
+  const id = req.params.id
+
   try {
-    const [result] = await req.db.query('DELETE FROM Student WHERE StudentID = ?', [req.params.id])
+    // 1. delete notifications
+    await req.db.query(`
+      DELETE FROM Notification 
+      WHERE ResultID IN (
+        SELECT ResultID FROM Result WHERE StudentID = ?
+      )
+    `, [id])
+
+    // 2. delete results
+    await req.db.query(
+      `DELETE FROM Result WHERE StudentID = ?`, 
+      [id]
+    )
+
+    // 3. delete student
+    const [result] = await req.db.query(
+      `DELETE FROM Student WHERE StudentID = ?`, 
+      [id]
+    )
+
     if (result.affectedRows === 0)
       return res.status(404).json({ error: 'Student not found' })
+
     res.json({ message: 'Student deleted successfully' })
+
   } catch (err) {
-    res.status(500).json({ error: err.sqlMessage || err.message })
+    console.error(err)
+    res.status(500).json({ error: err.message })
   }
 })
 
