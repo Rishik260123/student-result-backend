@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS StudentResultSystem;
-USE StudentResultSystem;
+-- CREATE DATABASE IF NOT EXISTS StudentResultSystem;
+-- USE StudentResultSystem;
 
 DROP VIEW IF EXISTS AdminDashboard;
 
