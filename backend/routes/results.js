@@ -126,14 +126,24 @@ router.post('/', async (req, res) => {
     await req.db.query('CALL AddResult(?, ?, ?, ?, ?)', [marks, grade, studentId, subCode, adminId])
 
     // 2. Get the new ResultID + student email + subject name for the email
-    const [[result]] = await req.db.query(`
-      SELECT r.ResultID, s.StudentName, s.Email, sub.SubjectName
-      FROM result r
-      JOIN student s      ON r.StudentID   = s.StudentID
-      JOIN subject sub    ON r.SubjectCode = sub.SubjectCode
-      WHERE r.StudentID = ? AND r.SubjectCode = ?
-      ORDER BY r.ResultID DESC LIMIT 1
-    `, [studentId, subCode])
+    const [rows] = await req.db.query(`
+  SELECT
+    r.ResultID, r.MarksObtained, r.Grade,
+    r.StudentID, r.SubjectCode, r.AdminID,
+    s.StudentName, sub.SubjectName
+  FROM result r
+  JOIN student s   ON r.StudentID   = s.StudentID
+  JOIN subject sub ON r.SubjectCode = sub.SubjectCode
+  ORDER BY r.ResultID DESC
+`)
+    // const [[result]] = await req.db.query(`
+    //   SELECT r.ResultID, s.StudentName, s.Email, sub.SubjectName
+    //   FROM result r
+    //   JOIN student s      ON r.StudentID   = s.StudentID
+    //   JOIN subject sub    ON r.SubjectCode = sub.SubjectCode
+    //   WHERE r.StudentID = ? AND r.SubjectCode = ?
+    //   ORDER BY r.ResultID DESC LIMIT 1
+    // `, [studentId, subCode])
 
     // 3. Try to send email
     if (result.Email) {
