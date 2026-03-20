@@ -55,6 +55,10 @@ app.use('/api/results',       require('./routes/results'))
 app.use('/api/notifications', require('./routes/notifications'))
 app.use('/api/dashboard',     require('./routes/dashboard'))
 
+app.get('/', (req, res) => {
+  res.send('🚀 Student Result Backend is running')
+})
+
 // Health check
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', time: new Date() }))
 
