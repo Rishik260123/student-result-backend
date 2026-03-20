@@ -1,4 +1,7 @@
 require('dotenv').config()
+// just for checking 
+console.log('🚀 Server file loaded')
+
 const express = require('express')
 const cors = require('cors')
 const mysql = require('mysql2/promise')
@@ -46,7 +49,8 @@ app.use((req, _res, next) => {
   req.db = pool
   next()
 })
-
+//checking for routes
+console.log('Loading routes...')
 // Routes
 app.use('/api/students',      require('./routes/students'))
 app.use('/api/subjects',      require('./routes/subjects'))
