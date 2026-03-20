@@ -140,7 +140,9 @@ router.post('/', async (req, res) => {
     // 3. Try to send email
     if (result.Email) {
       try {
-        await sendResultEmail(result.Email, result.StudentName, result.SubjectName, marks, grade)
+        sendResultEmail(result.Email, result.StudentName, result.SubjectName, marks, grade)
+  .then(() => console.log("Email sent"))
+  .catch(err => console.log("Email failed:", err.message))
         // Mark notification as Success
         await req.db.query(`
           UPDATE Notification SET AlertStatus = 'Success', AlertTimeStamp = NOW()
@@ -150,7 +152,7 @@ router.post('/', async (req, res) => {
       } catch (emailErr) {
         // Email failed — mark as Failed in notification
         await req.db.query(`
-          UPDATE notification SET AlertStatus = 'Failed', AlertTimeStamp = NOW()
+          UPDATE Notification SET AlertStatus = 'Failed', AlertTimeStamp = NOW()
           WHERE ResultID = ? ORDER BY AlertID DESC LIMIT 1
         `, [result.ResultID])
         console.error('Email error:', emailErr.message)
