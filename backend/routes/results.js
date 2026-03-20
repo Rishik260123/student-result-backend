@@ -104,9 +104,9 @@ router.get('/', async (req, res) => {
         r.ResultID, r.MarksObtained, r.Grade,
         r.StudentID, r.SubjectCode, r.AdminID,
         s.StudentName, sub.SubjectName
-      FROM result r
-      JOIN student s   ON r.StudentID   = s.StudentID
-      JOIN subject sub ON r.SubjectCode = sub.SubjectCode
+      FROM Result r
+      JOIN Student s   ON r.StudentID   = s.StudentID
+      JOIN Subject sub ON r.SubjectCode = sub.SubjectCode
       ORDER BY r.ResultID DESC
     `)
 
@@ -131,8 +131,8 @@ router.post('/', async (req, res) => {
     const [[result]] = await req.db.query(`
       SELECT r.ResultID, s.StudentName, s.Email, sub.SubjectName
       FROM Result r
-      JOIN student s      ON r.StudentID   = s.StudentID
-      JOIN subject sub    ON r.SubjectCode = sub.SubjectCode
+      JOIN Student s      ON r.StudentID   = s.StudentID
+      JOIN Subject sub    ON r.SubjectCode = sub.SubjectCode
       WHERE r.StudentID = ? AND r.SubjectCode = ?
       ORDER BY r.ResultID DESC LIMIT 1
     `, [studentId, subCode])
@@ -143,7 +143,7 @@ router.post('/', async (req, res) => {
         await sendResultEmail(result.Email, result.StudentName, result.SubjectName, marks, grade)
         // Mark notification as Success
         await req.db.query(`
-          UPDATE notification SET AlertStatus = 'Success', AlertTimeStamp = NOW()
+          UPDATE Notification SET AlertStatus = 'Success', AlertTimeStamp = NOW()
           WHERE ResultID = ? ORDER BY AlertID DESC LIMIT 1
         `, [result.ResultID])
         res.status(201).json({ message: 'Result added and email sent successfully!' })
