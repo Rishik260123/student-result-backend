@@ -3,7 +3,7 @@ const router = require('express').Router()
 // GET all notifications
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await req.db.query('SELECT * FROM notification ORDER BY AlertTimeStamp DESC')
+    const [rows] = await req.db.query('SELECT * FROM Notification ORDER BY AlertTimeStamp DESC')
     res.json(rows)
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 router.put('/:id/sent', async (req, res) => {
   try {
     const [result] = await req.db.query(
-      `UPDATE notification SET AlertStatus = 'Success', AlertTimeStamp = NOW() WHERE AlertID = ?`,
+      `UPDATE Notification SET AlertStatus = 'Success', AlertTimeStamp = NOW() WHERE AlertID = ?`,
       [req.params.id]
     )
     if (result.affectedRows === 0)
@@ -29,7 +29,7 @@ router.put('/:id/sent', async (req, res) => {
 router.delete('/archive', async (req, res) => {
   try {
     const [result] = await req.db.query(
-      `DELETE FROM notification WHERE AlertStatus = 'Success'`
+      `DELETE FROM Notification WHERE AlertStatus = 'Success'`
     )
     res.json({ 
       message: `Archived ${result.affectedRows} notification(s) successfully`,

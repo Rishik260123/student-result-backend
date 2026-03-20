@@ -3,7 +3,7 @@ const router = require('express').Router()
 router.get('/', async (req, res) => {
   try {
     const [rows] = await req.db.query(
-      'SELECT AdminID, Name AS AdminName, Email AS AdminEmail FROM administrator ORDER BY AdminID DESC'
+      'SELECT AdminID, Name AS AdminName, Email AS AdminEmail FROM Administrator ORDER BY AdminID DESC'
     )
     res.json(rows)
   } catch (err) {
@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const [result] = await req.db.query('DELETE FROM administrator WHERE AdminID = ?', [req.params.id])
+    const [result] = await req.db.query('DELETE FROM Administrator WHERE AdminID = ?', [req.params.id])
     if (result.affectedRows === 0)
       return res.status(404).json({ error: 'Admin not found' })
     res.json({ message: 'Admin deleted successfully' })

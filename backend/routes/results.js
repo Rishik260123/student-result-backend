@@ -130,7 +130,7 @@ router.post('/', async (req, res) => {
     // 2. Get the new ResultID + student email + subject name for the email
     const [[result]] = await req.db.query(`
       SELECT r.ResultID, s.StudentName, s.Email, sub.SubjectName
-      FROM result r
+      FROM Result r
       JOIN student s      ON r.StudentID   = s.StudentID
       JOIN subject sub    ON r.SubjectCode = sub.SubjectCode
       WHERE r.StudentID = ? AND r.SubjectCode = ?
