@@ -33,7 +33,7 @@ router.delete('/:id', async (req, res) => {
   const id = req.params.id
 
   try {
-    // 1. delete notifications
+    // delete notifications first
     await req.db.query(`
       DELETE FROM Notification 
       WHERE ResultID IN (
@@ -41,25 +41,26 @@ router.delete('/:id', async (req, res) => {
       )
     `, [id])
 
-    // 2. delete results
+    // delete results
     await req.db.query(
       `DELETE FROM Result WHERE StudentID = ?`, 
       [id]
     )
 
-    // 3. delete student
+    // delete student
     const [result] = await req.db.query(
       `DELETE FROM Student WHERE StudentID = ?`, 
       [id]
     )
 
-    if (result.affectedRows === 0)
+    if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Student not found' })
+    }
 
     res.json({ message: 'Student deleted successfully' })
 
   } catch (err) {
-    console.error(err)
+    console.error("DELETE ERROR:", err)
     res.status(500).json({ error: err.message })
   }
 })
