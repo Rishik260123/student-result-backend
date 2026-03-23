@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getStudents, addStudent, getStudentReport } from '../api'
-import axios from 'axios'
+// import axios from 'axios'
+import api from '../api'
 import { UserPlus, Search, Eye, Trash2, X, AlertTriangle } from 'lucide-react'
 
 function Modal({ onClose, children }) {
@@ -46,18 +47,30 @@ export default function Students() {
     }
   }
 
+  // const handleDelete = async () => {
+  //   setDeleting(true)
+  //   try {
+  //     await axios.delete(`/api/students/${deleteTarget.StudentID}`)
+  //     setDeleteTarget(null)
+  //     load()
+  //   } catch (err) {
+  //     alert(err.response?.data?.error || 'Error deleting student')
+  //   } finally {
+  //     setDeleting(false)
+  //   }
+  // }
   const handleDelete = async () => {
-    setDeleting(true)
-    try {
-      await axios.delete(`/api/students/${deleteTarget.StudentID}`)
-      setDeleteTarget(null)
-      load()
-    } catch (err) {
-      alert(err.response?.data?.error || 'Error deleting student')
-    } finally {
-      setDeleting(false)
-    }
+  setDeleting(true)
+  try {
+    await api.delete(`/students/${deleteTarget.StudentID}`)
+    setDeleteTarget(null)
+    load()
+  } catch (err) {
+    alert(err.response?.data?.error || 'Error deleting student')
+  } finally {
+    setDeleting(false)
   }
+}
 
   const viewReport = async (s) => {
     setReportStudent(s)

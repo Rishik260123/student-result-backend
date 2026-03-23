@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getAdmins, addAdmin } from '../api'
-import axios from 'axios'
+import api from '../api'
 import { UserCog, X, Trash2, AlertTriangle } from 'lucide-react'
 
 function Modal({ onClose, children }) {
@@ -38,16 +38,28 @@ export default function Admins() {
     } finally { setSubmitting(false) }
   }
 
+  // const handleDelete = async () => {
+  //   setDeleting(true)
+  //   try {
+  //     await axios.delete(`/api/admins/${deleteTarget.AdminID}`)
+  //     setDeleteTarget(null)
+  //     load()
+  //   } catch (err) {
+  //     alert(err.response?.data?.error || 'Error deleting admin')
+  //   } finally { setDeleting(false) }
+  // }
   const handleDelete = async () => {
-    setDeleting(true)
-    try {
-      await axios.delete(`/api/admins/${deleteTarget.AdminID}`)
-      setDeleteTarget(null)
-      load()
-    } catch (err) {
-      alert(err.response?.data?.error || 'Error deleting admin')
-    } finally { setDeleting(false) }
+  setDeleting(true)
+  try {
+    await api.delete(`/admins/${deleteTarget.AdminID}`)
+    setDeleteTarget(null)
+    load()
+  } catch (err) {
+    alert(err.response?.data?.error || 'Error deleting admin')
+  } finally {
+    setDeleting(false)
   }
+}
 
   return (
     <>
