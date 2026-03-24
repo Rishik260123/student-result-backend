@@ -62,6 +62,7 @@ export default function Students() {
   const handleDelete = async () => {
   setDeleting(true)
   try {
+    console.log("DELETE CLICKED",deleteTarget.StudentID)
     await api.delete(`/students/${deleteTarget.StudentID}`)
     setDeleteTarget(null)
     load()
